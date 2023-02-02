@@ -52,7 +52,7 @@ def enum_https(target, timeout, headers):
         elif r.status_code in range(200, 299):
             print(f'{successful}SUCCESS{endc} - {https_fqdn} [{successful}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(300, 399):
-            print(f'{redirection}REDIRECTION{endc} - {https_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) → {r.headers["location"]}')
+            print(f'{redirection}REDIRECTION{endc} - {https_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) {redirection}→{endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
             print(f'{client_error}CLIENT_ERROR{endc} - {https_fqdn} [{client_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(500, 599):
@@ -84,7 +84,7 @@ def enum_http(target, timeout, headers):
         elif r.status_code in range(200, 299):
             print(f'{successful}SUCCESS{endc} - {http_fqdn} [{successful}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(300, 399):
-            print(f'{redirection}REDIRECTION{endc} - {http_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) → {r.headers["location"]}')
+            print(f'{redirection}REDIRECTION{endc} - {http_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) {redirection}→{endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
             print(f'{client_error}CLIENT_ERROR{endc} - {http_fqdn} [{client_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(500, 599):
