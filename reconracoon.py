@@ -105,6 +105,7 @@ def enum_http(target, timeout):
 
 if __name__ == '__main__':
     # Check Target
+    print(args.target)
     if os.path.isfile(args.target) is False:
         if args.common_ports:
             for port in ports:
