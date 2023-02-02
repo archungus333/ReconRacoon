@@ -114,7 +114,7 @@ if __name__ == '__main__':
             enum_https(args.url, args.timeout)
             enum_http(args.url, args.timeout)
     if os.path.isfile(args.target) is True:
-        with args.url_file as file:
+        with args.target as file:
             targets = [x.strip() for x in file.readlines()]
             if args.common_ports:
                 for url in targets:
