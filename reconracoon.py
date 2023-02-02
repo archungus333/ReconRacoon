@@ -126,7 +126,7 @@ if __name__ == '__main__':
                         enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
             else:
                 for url in targets:
-                    enum_https(url, args.timeout)
-                    enum_http(url, args.timeout)
+                    enum_https(url, args.timeout, {'User-Agent': args.user_agent})
+                    enum_http(url, args.timeout, {'User-Agent': args.user_agent})
     else:
         pass
