@@ -19,7 +19,7 @@ print(racoon)
 # Argparse
 parser = argparse.ArgumentParser(prog='ReconRacoon', description='Extensive Enumeration of Multiple Subdomains')
 parser.add_argument('-t', '--target', dest='target', type=str, required=True, help='Target subdomains or IPs (str/file)')
-parser.add_argument('-d', '--delay', dest='timeout',type=float, default=1.0, help='Timeout for all web requests')
+parser.add_argument('-d', '--delay', dest='timeout',type=float, default=1, help='Timeout for all web requests')
 parser.add_argument('-u', '--user-agent', dest='user_agent', default='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', type=str, help='Use custom user agent')
 parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
 parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
@@ -48,15 +48,15 @@ def enum_https(target, timeout, headers):
     try:
         r = sesh.get(https_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
         if r.status_code in range(100, 199):
-            print(f'{https_fqdn} [{informational}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{informational}INFO{endc} - {https_fqdn} [{informational}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(200, 299):
-            print(f'{https_fqdn} [{successful}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{successful}SUCCESS{endc} - {https_fqdn} [{successful}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(300, 399):
-            print(f'{https_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) → {r.headers["location"]}')
+            print(f'{redirection}REDIRECTION{endc} - {https_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) → {r.headers["location"]}')
         elif r.status_code in range(400, 499):
-            print(f'{https_fqdn} [{client_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{client_error}CLIENT_ERROR{endc} - {https_fqdn} [{client_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(500, 599):
-            print(f'{https_fqdn} [{server_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{server_error}SERVER_ERROR{endc} - {https_fqdn} [{server_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         else:
             pass
     except requests.exceptions.ConnectTimeout:
@@ -80,15 +80,15 @@ def enum_http(target, timeout, headers):
     try:
         r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
         if r.status_code in range(100, 199):
-            print(f'{http_fqdn} [{informational}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{informational}INFO{endc} - {http_fqdn}[{informational}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(200, 299):
-            print(f'{http_fqdn} [{successful}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{successful}SUCCESS{endc} - {http_fqdn} [{successful}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(300, 399):
-            print(f'{http_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) → {r.headers["location"]}')
+            print(f'{redirection}REDIRECTION{endc} - {http_fqdn} [{redirection}{r.status_code}{endc}] {endc}({r.headers["server"]}) → {r.headers["location"]}')
         elif r.status_code in range(400, 499):
-            print(f'{http_fqdn} [{client_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{client_error}CLIENT_ERROR{endc} - {http_fqdn} [{client_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(500, 599):
-            print(f'{http_fqdn} [{server_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
+            print(f'{server_error}SERVER_ERROR{endc} - {http_fqdn} [{server_error}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         else:
             pass
     except requests.exceptions.ConnectTimeout:
