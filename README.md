@@ -1,6 +1,16 @@
 # ReconRacoon
 Just some 1337 Racoon digging through other peoples trash bins.
 
+'''
+                        ,,,
+                     .'    `/\_/\
+                   .'       <@I@>
+        <((((((((((  )____(  \./
+                   \( \(   \(\(
+   ReconRacoon      `-"`-"  " "
+'''
+
+
 ## Features
 - Response code enumeration of domains & IPs
 - Common webserver port check via seclists
