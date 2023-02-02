@@ -18,12 +18,11 @@ print(racoon)
 
 # Argparse
 parser = argparse.ArgumentParser(prog='ReconRacoon', description='Extensive Enumeration of Multiple Subdomains')
-group = parser.add_mutually_exclusive_group(required=True)
-group.add_argument('-u', '--url', type=str)
-group.add_argument('-uf', '--url-file', type=argparse.FileType('r'))
-parser.add_argument('-t', '--timeout', type=float, default=1)
-parser.add_argument('-c', '--common', action='store_true')
-parser.add_argument('-v', '--verbose', action='store_true')
+parser.add_argument('-t', '--target', type=str, required=True, help='Target subdomains or IPs (str/file)')
+parser.add_argument('-d', '--delay', type=float, default=1, help='Timeout for all web requests')
+parser.add_argument('-u', '--user-agent', type=str, help='Use custom user agent')
+parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
+parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
 args = parser.parse_args()
 
 # Response types
