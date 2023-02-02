@@ -1,4 +1,4 @@
-import sys
+import os
 import requests
 import argparse
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
