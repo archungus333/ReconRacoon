@@ -1,6 +1,8 @@
 # ReconRacoon
 Just some 1337 Racoon digging through other peoples trash bins.
 
+[![GitHub stars](https://img.shields.io/github/stars/khrome/ascii-art.svg?style=social&label=Star)](https://github.com/khrome/ascii-art)
+
 ´´´
                         ,,,
                      .'    `/\_/\
