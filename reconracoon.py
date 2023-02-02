@@ -106,17 +106,17 @@ def enum_http(target, timeout):
 if __name__ == '__main__':
     # Check Target
     if os.path.isfile(args.target) is False:
-        if args.common:
+        if args.common_ports:
             for port in ports:
-                enum_https(f'{args.url}:{port}', args.timeout)
-                enum_http(f'{args.url}:{port}', args.timeout)
+                enum_https(f'{args.target}:{port}', args.timeout)
+                enum_http(f'{args.target}:{port}', args.timeout)
         else:
             enum_https(args.url, args.timeout)
             enum_http(args.url, args.timeout)
     if os.path.isfile(args.target) is True:
         with args.url_file as file:
             targets = [x.strip() for x in file.readlines()]
-            if args.common:
+            if args.common_ports:
                 for url in targets:
                     for port in ports:
                         enum_https(f'{url}:{port}', args.timeout)
