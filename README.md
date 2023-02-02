@@ -1,5 +1,5 @@
 # ReconRacoon
-Just some 1337 Racoon diggung through other peoples trash bins.
+Just some 1337 Racoon digging through other peoples trash bins.
 
 ## Features
 - Response code enumeration of domains & IPs
