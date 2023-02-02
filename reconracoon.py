@@ -114,8 +114,8 @@ if __name__ == '__main__':
                 enum_https(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
                 enum_http(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
         else:
-            enum_https(args.target, args.timeout)
-            enum_http(args.target, args.timeout)
+            enum_https(args.target, args.timeout, {'User-Agent': args.user_agent})
+            enum_http(args.target, args.timeout, {'User-Agent': args.user_agent})
     if os.path.isfile(args.target) is True:
         with open(args.target) as file:
             targets = [x.strip() for x in file.readlines()]
