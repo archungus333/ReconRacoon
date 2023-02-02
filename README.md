@@ -1,5 +1,10 @@
 # ReconRacoon
 Just some 1337 Racoon diggung through other peoples trash bins.
+
+## Features
+- Response code enumeration of domains & IPs
+- Common webserver port check via seclists
+- Simple information header analysis
                         
 
 ```
