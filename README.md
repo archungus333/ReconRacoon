@@ -12,12 +12,16 @@
 Just some 1337 Racoon digging through other peoples trash bins.
 ```
 
+## Setup
+```
+pip3 install -r requirements.txt
+```
+
 ## Features
 - Response code enumeration of domains & IPs
 - Common webserver port check via seclists
 - Simple information header analysis
                         
-
 ```
 usage: ReconRacoon [-h] -t TARGET [-d TIMEOUT] [-u USER_AGENT] [-c] [-v]
 
