@@ -5,12 +5,6 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 requests.adapters.DEFAULT_RETRIES = 100
 
-
-
-TEST
-
-
-
 # Ascii banner
 racoon = r'''
                         ,,,
