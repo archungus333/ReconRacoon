@@ -1,10 +1,6 @@
-# Just some 1337 Racoon diggung through other peoples trash bins.
-                        ,,,
-                     .'    `/\_/\
-                   .'       <@I@>
-        <((((((((((  )____(  \./
-                   \( \(   \(\(
-   ReconRacoon      `-"`-"  " "
+# ReconRacoon
+Just some 1337 Racoon diggung through other peoples trash bins.
+                        
 
 ```
 usage: ReconRacoon [-h] (-u URL | -uf URL_FILE) [-t TIMEOUT] [-c] [-v]
