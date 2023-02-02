@@ -18,9 +18,9 @@ print(racoon)
 
 # Argparse
 parser = argparse.ArgumentParser(prog='ReconRacoon', description='Extensive Enumeration of Multiple Subdomains')
-parser.add_argument('-t', '--target', type=str, required=True, help='Target subdomains or IPs (str/file)')
-parser.add_argument('-d', '--delay', type=float, default=1, help='Timeout for all web requests')
-parser.add_argument('-u', '--user-agent', type=str, help='Use custom user agent')
+parser.add_argument('-t', '--target', dest='target', type=str, required=True, help='Target subdomains or IPs (str/file)')
+parser.add_argument('-d', '--delay', dest='timeout',type=float, default=1, help='Timeout for all web requests')
+parser.add_argument('-u', '--user-agent', dest='user_agent', type=str, help='Use custom user agent')
 parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
 parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
 args = parser.parse_args()
@@ -104,8 +104,8 @@ def enum_http(target, timeout):
 
 
 if __name__ == '__main__':
-    # Parse targets
-    if args.url:
+    # Check Target
+    if os.path.isfile(args.target) is False:
         if args.common:
             for port in ports:
                 enum_https(f'{args.url}:{port}', args.timeout)
@@ -113,7 +113,7 @@ if __name__ == '__main__':
         else:
             enum_https(args.url, args.timeout)
             enum_http(args.url, args.timeout)
-    if args.url_file:
+    if os.path.isfile(args.target) is True:
         with args.url_file as file:
             targets = [x.strip() for x in file.readlines()]
             if args.common:
@@ -125,3 +125,5 @@ if __name__ == '__main__':
                 for url in targets:
                     enum_https(url, args.timeout)
                     enum_http(url, args.timeout)
+    else:
+        pass
