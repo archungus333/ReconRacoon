@@ -1,17 +1,16 @@
-![Supported Python versions](https://img.shields.io/badge/python-3.7+-blue.svg)
-[![GitHub stars](https://img.shields.io/github/stars/khrome/ascii-art.svg?style=social&label=Star)](https://github.com/archungus333/reconracoon)
-
 # ReconRacoon
+![Supported Python versions](https://img.shields.io/badge/python-3.7+-blue.svg)
+
 Just some 1337 Racoon digging through other peoples trash bins.
 
-´´´
+```
                         ,,,
                      .'    `/\_/\
                    .'       <@I@>
         <((((((((((  )____(  \./
                    \( \(   \(\(
    ReconRacoon      `-"`-"  " "
-´´´
+```
 
 
 ## Features
