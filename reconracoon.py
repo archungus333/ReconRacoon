@@ -1,19 +1,34 @@
+import datetime
 import os
 import requests
 import argparse
+import datetime
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 requests.adapters.DEFAULT_RETRIES = 100
 
+# Response types
+informational = '\033[34m'
+successful = '\033[32m'
+redirection = '\033[33m'
+client_error = '\033[35m'
+server_error = '\033[31m'
+endc = '\033[m'
+
+# Timstamp
+now = datetime.datetime.now()
+current_time = now.strftime("%H:%M:%S")
+current_date = now.strftime("%D")
+
 # Ascii banner
-racoon = r'''
-                        ,,,
-                     .'    `/\_/\
-                   .'       <@I@>
-        <((((((((((  )____(  \./
-                   \( \(   \(\(
-   ReconRacoon      `-"`-"  " "
-'''
+racoon = rf'''┌───────────────────────────────────────────┐
+│ DT: {current_date}           ,,,                │
+│ TS: {current_time}        .'    `/\_/\          │
+│                   .'       <@I@>          │
+│        <((((((((((  )____(  \./           │
+│                   \( \(   \(\(            │
+│ {redirection}Recon{client_error}Racoon{endc}        `-"`-"  " "            │
+└───────────────────────────────────────────┘'''
 print(racoon)
 
 # Argparse
@@ -24,14 +39,6 @@ parser.add_argument('-u', '--user-agent', dest='user_agent', default='Mozilla/5.
 parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
 parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
 args = parser.parse_args()
-
-# Response types
-informational = '\033[34m'
-successful = '\033[32m'
-redirection = '\033[33m'
-client_error = '\033[35m'
-server_error = '\033[31m'
-endc = '\033[m'
 
 # Common http ports
 ports = [66, 80, 81, 443, 445, 457, 1080, 1100, 1241, 1352, 1433, 1434, 1521,
@@ -108,25 +115,29 @@ if __name__ == '__main__':
     if args.user_agent:
         agent = {'User-Agent': args.user_agent}
     # Check Target
-    if os.path.isfile(args.target) is False:
-        if args.common_ports:
-            for port in ports:
-                enum_https(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
-                enum_http(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
-        else:
-            enum_https(args.target, args.timeout, {'User-Agent': args.user_agent})
-            enum_http(args.target, args.timeout, {'User-Agent': args.user_agent})
-    if os.path.isfile(args.target) is True:
-        with open(args.target) as file:
-            targets = [x.strip() for x in file.readlines()]
+    try:
+        if os.path.isfile(args.target) is False:
             if args.common_ports:
-                for url in targets:
-                    for port in ports:
-                        enum_https(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
-                        enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                for port in ports:
+                    enum_https(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                    enum_http(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
             else:
-                for url in targets:
-                    enum_https(url, args.timeout, {'User-Agent': args.user_agent})
-                    enum_http(url, args.timeout, {'User-Agent': args.user_agent})
-    else:
-        pass
+                enum_https(args.target, args.timeout, {'User-Agent': args.user_agent})
+                enum_http(args.target, args.timeout, {'User-Agent': args.user_agent})
+        if os.path.isfile(args.target) is True:
+            with open(args.target) as file:
+                targets = [x.strip() for x in file.readlines()]
+                if args.common_ports:
+                    for url in targets:
+                        for port in ports:
+                            enum_https(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                            enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                else:
+                    for url in targets:
+                        enum_https(url, args.timeout, {'User-Agent': args.user_agent})
+                        enum_http(url, args.timeout, {'User-Agent': args.user_agent})
+        else:
+            pass
+    except KeyboardInterrupt:
+        print(f'{server_error} leaving..{endc}')
+        exit()
