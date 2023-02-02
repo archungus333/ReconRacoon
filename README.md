@@ -8,15 +8,18 @@ Just some 1337 Racoon digging through other peoples trash bins.
                         
 
 ```
-usage: ReconRacoon [-h] (-u URL | -uf URL_FILE) [-t TIMEOUT] [-c] [-v]
+usage: ReconRacoon [-h] -t TARGET [-d TIMEOUT] [-u USER_AGENT] [-c] [-v]
 
 Extensive Enumeration of Multiple Subdomains
 
 options:
   -h, --help            show this help message and exit
-  -u URL, --url URL
-  -uf URL_FILE, --url-file URL_FILE
-  -t TIMEOUT, --timeout TIMEOUT
-  -c, --common
-  -v, --verbose
+  -t TARGET, --target TARGET
+                        Target subdomains or IPs (str/file)
+  -d TIMEOUT, --delay TIMEOUT
+                        Timeout for all web requests
+  -u USER_AGENT, --user-agent USER_AGENT
+                        Use custom user agent
+  -c, --common-ports    Check all common webserver ports (seclist)
+  -v, --verbose         Display verbose output (timeouts/errors)
 ```
