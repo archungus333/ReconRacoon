@@ -20,7 +20,7 @@ print(racoon)
 parser = argparse.ArgumentParser(prog='ReconRacoon', description='Extensive Enumeration of Multiple Subdomains')
 parser.add_argument('-t', '--target', dest='target', type=str, required=True, help='Target subdomains or IPs (str/file)')
 parser.add_argument('-d', '--delay', dest='timeout',type=float, default=1, help='Timeout for all web requests')
-parser.add_argument('-u', '--user-agent', dest='user_agent', type=str, help='Use custom user agent')
+parser.add_argument('-u', '--user-agent', dest='user_agent', default='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', type=str, help='Use custom user agent')
 parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
 parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
 args = parser.parse_args()
@@ -40,13 +40,13 @@ ports = [66, 80, 81, 443, 445, 457, 1080, 1100, 1241, 1352, 1433, 1434, 1521,
 
 
 # Https enumeration
-def enum_https(target, timeout):
+def enum_https(target, timeout, headers):
     # https
     https_fqdn = f'https://{target}'
     sesh = requests.session()
     sesh.keep_alive = False
     try:
-        r = sesh.get(https_fqdn, allow_redirects=False, verify=False, timeout=timeout)
+        r = sesh.get(https_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
         if r.status_code in range(100, 199):
             print(f'{https_fqdn} [{informational}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(200, 299):
@@ -72,13 +72,13 @@ def enum_https(target, timeout):
 
 
 # Http enumeration
-def enum_http(target, timeout):
+def enum_http(target, timeout, headers):
     # http
     http_fqdn = f'http://{target}'
     sesh = requests.session()
     sesh.keep_alive = False
     try:
-        r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout)
+        r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
         if r.status_code in range(100, 199):
             print(f'{http_fqdn} [{informational}{r.status_code}{endc}] {endc}({r.headers["server"]})')
         elif r.status_code in range(200, 299):
@@ -104,12 +104,15 @@ def enum_http(target, timeout):
 
 
 if __name__ == '__main__':
+    # Var
+    if args.user_agent:
+        agent = {'User-Agent': args.user_agent}
     # Check Target
     if os.path.isfile(args.target) is False:
         if args.common_ports:
             for port in ports:
-                enum_https(f'{args.target}:{port}', args.timeout)
-                enum_http(f'{args.target}:{port}', args.timeout)
+                enum_https(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                enum_http(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
         else:
             enum_https(args.target, args.timeout)
             enum_http(args.target, args.timeout)
@@ -119,8 +122,8 @@ if __name__ == '__main__':
             if args.common_ports:
                 for url in targets:
                     for port in ports:
-                        enum_https(f'{url}:{port}', args.timeout)
-                        enum_http(f'{url}:{port}', args.timeout)
+                        enum_https(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                        enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
             else:
                 for url in targets:
                     enum_https(url, args.timeout)
