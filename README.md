@@ -1,8 +1,6 @@
 # ReconRacoon
 ![Supported Python versions](https://img.shields.io/badge/python-3.7+-blue.svg)
 
-Just some 1337 Racoon digging through other peoples trash bins.
-
 ```
                         ,,,
                      .'    `/\_/\
@@ -10,8 +8,9 @@ Just some 1337 Racoon digging through other peoples trash bins.
         <((((((((((  )____(  \./
                    \( \(   \(\(
    ReconRacoon      `-"`-"  " "
-```
 
+Just some 1337 Racoon digging through other peoples trash bins.
+```
 
 ## Features
 - Response code enumeration of domains & IPs
