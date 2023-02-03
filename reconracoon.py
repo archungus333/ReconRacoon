@@ -38,6 +38,8 @@ parser.add_argument('-d', '--delay', dest='timeout', type=float, default=1.0, he
 parser.add_argument('-u', '--user-agent', dest='user_agent', default='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', type=str, help='Use custom user agent')
 parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
 parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
+#parser.add_argument('-s', '--screenshot', action='store_true', help='Takes a screenshot of the webpage and stores it in screenshots/')
+parser.add_argument('-r', '--robots', action='store_true', help='Saves the robots.txt in robots/')
 args = parser.parse_args()
 
 # Common http ports
@@ -110,6 +112,40 @@ def enum_http(target, timeout, headers):
             pass
 
 
+def enum_robots(target, timeout, headers):
+    #download robots.txt
+    http_fqdn = f'http://{target}'
+    https_fqdn = f'https://{target}'
+    sesh = requests.session()
+    sesh.keep_alive = False
+    if args.robots:
+        try:
+            r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
+            if r.status_code in range(200, 299):
+                robo = f'{http_fqdn}/robots.txt'
+                robo = requests.get(robo, allow_redirects=False)
+                os.makedirs('robots')
+                open(f'robots/HTTP_{target}.txt', 'wb').write(robo.content)
+            elif r.status_code in range(300, 399):
+                robo = f'{https_fqdn}/robots.txt'
+                robo = requests.get(robo, allow_redirects=False)
+                os.makedirs('robots')
+                open(f'robots/HTTPS_{target}.txt', 'wb').write(robo.content)
+            print(target)
+        except requests.exceptions.ConnectTimeout:
+            if args.verbose is True:
+                print(f'{server_error}TIMEOUT{endc} - {http_fqdn} [{server_error}after {timeout}/s {endc}]')
+            else:
+                pass
+        except Exception as E:
+            if args.verbose is True:
+                print(f'{server_error}ERROR{endc} - {http_fqdn} [{server_error}{E}{endc}]')
+            else:
+                pass
+    else:
+        pass
+
+
 if __name__ == '__main__':
     # Var
     if args.user_agent:
@@ -121,9 +157,11 @@ if __name__ == '__main__':
                 for port in ports:
                     enum_https(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
                     enum_http(f'{args.target}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                    enum_robots(args.target, args.timeout, {'User-Agent': args.user_agent})
             else:
                 enum_https(args.target, args.timeout, {'User-Agent': args.user_agent})
                 enum_http(args.target, args.timeout, {'User-Agent': args.user_agent})
+                enum_robots(args.target, args.timeout, {'User-Agent': args.user_agent})
         if os.path.isfile(args.target) is True:
             with open(args.target) as file:
                 targets = [x.strip() for x in file.readlines()]
@@ -132,10 +170,12 @@ if __name__ == '__main__':
                         for port in ports:
                             enum_https(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
                             enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent})
+                            enum_robots(url, args.timeout, {'User-Agent': args.user_agent})
                 else:
                     for url in targets:
                         enum_https(url, args.timeout, {'User-Agent': args.user_agent})
                         enum_http(url, args.timeout, {'User-Agent': args.user_agent})
+                        enum_robots(url, args.timeout, {'User-Agent': args.user_agent})
         else:
             pass
     except KeyboardInterrupt:
