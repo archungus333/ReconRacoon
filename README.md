@@ -36,5 +36,6 @@ options:
   -u USER_AGENT, --user-agent USER_AGENT
                         Use custom user agent
   -c, --common-ports    Check all common webserver ports (seclist)
+  -r, --robots          Saves the robots.txt of each target in a folder (robots/)
   -v, --verbose         Display verbose output (timeouts/errors)
 ```
