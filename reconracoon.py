@@ -124,14 +124,15 @@ def enum_robots(target, timeout, headers):
             if r.status_code in range(200, 299):
                 robo = f'{http_fqdn}/robots.txt'
                 robo = requests.get(robo, allow_redirects=False)
-                os.makedirs('robots')
+                if not os.path.exists('robots'):
+                    os.makedirs('robots')
                 open(f'robots/HTTP_{target}.txt', 'wb').write(robo.content)
             elif r.status_code in range(300, 399):
                 robo = f'{https_fqdn}/robots.txt'
                 robo = requests.get(robo, allow_redirects=False)
-                os.makedirs('robots')
+                if not os.path.exists('robots'):
+                    os.makedirs('robots')
                 open(f'robots/HTTPS_{target}.txt', 'wb').write(robo.content)
-            print(target)
         except requests.exceptions.ConnectTimeout:
             if args.verbose is True:
                 print(f'{server_error}TIMEOUT{endc} - {http_fqdn} [{server_error}after {timeout}/s {endc}]')
