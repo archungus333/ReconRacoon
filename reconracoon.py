@@ -15,21 +15,33 @@ client_error = '\033[35m'
 server_error = '\033[31m'
 endc = '\033[m'
 
-# Timstamp
+# Timestamp
 now = datetime.datetime.now()
 current_time = now.strftime("%H:%M:%S")
 current_date = now.strftime("%D")
 
 # Ascii banner
-racoon = rf'''┌───────────────────────────────────────────┐
-│ DT: {current_date}           ,,,                │
-│ TS: {current_time}        .'    `/\_/\          │
-│                   .'       <@I@>          │
-│        <((((((((((  )____(  \./           │
-│                   \( \(   \(\(            │
-│ {redirection}Recon{client_error}Racoon{endc}        `-"`-"  " "            │
-└───────────────────────────────────────────┘'''
-print(racoon)
+print(rf"""
+        ,       ,
+       ( \     / (
+       \  .---.  /     
+       /.--. .--,\   .-'''-,
+      /\_(o) (o)_/\ /\ | /  \
+  __.-.___(_c_)_.-./\ \ / / /)
+ (__(((_________)))__--''/ / /
+  |  ||  ||  ||  ||  ||   / )
+  |  ||  ||  ||  ||  ||   |/
+  |  ||  ||  ||  ||  ||   '
+  \  ||  ||  ||  ||  ||
+   \ ||  ||  ||  |.- -'''- -._
+   /\||  ||  ||  ;            :
+  |  ||  ||  || :      __      ;
+  |  ||  ||  ||:      (  (      :
+  |  ||  ||  ||;               .
+  |  ||  ||  || ,             ;
+  |_{redirection}Recon{client_error}Racoon{endc}   '- -,..,- -'
+  DT: {current_date} │ TS: {current_time} 
+""")
 
 # Argparse
 parser = argparse.ArgumentParser(prog='ReconRacoon', description='Extensive Enumeration of Multiple Subdomains')
@@ -39,7 +51,6 @@ parser.add_argument('-u', '--user-agent', dest='user_agent', default='Mozilla/5.
 parser.add_argument('-c', '--common-ports', action='store_true', help='Check all common webserver ports (seclist)')
 parser.add_argument('-r', '--robots', action='store_true', help='Saves the robots.txt of each target in a folder (robots/)')
 parser.add_argument('-v', '--verbose', action='store_true', help='Display verbose output (timeouts/errors)')
-#parser.add_argument('-s', '--screenshot', action='store_true', help='Takes a screenshot of the webpage and stores it in screenshots/')
 args = parser.parse_args()
 
 # Common http ports
