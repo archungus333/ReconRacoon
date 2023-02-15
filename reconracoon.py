@@ -3,9 +3,9 @@ import sys
 from os import listdir
 from os.path import isfile, join
 # IMPORT SRC
-from src.framework import cli
-from src.modules import enum
-from src.modules import resolve
+from bin.framework import cli
+from bin.modules import enum
+from bin.modules import resolve
 
 # BANNER
 print(cli.racoon)
