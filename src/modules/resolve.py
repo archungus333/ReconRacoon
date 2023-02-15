@@ -27,7 +27,7 @@ def enum_https(target, timeout, headers, verbose):
         if "server" in r.headers:
             srv = f"({r.headers['server']})"
         else:
-            srv = "None"
+            srv = ""
         if r.status_code in range(100, 199):
             print(f'{cli.blue}INFO{cli.endc} - {https_fqdn} [{cli.blue}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(200, 299):
