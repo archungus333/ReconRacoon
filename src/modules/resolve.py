@@ -15,13 +15,6 @@ ports = [66, 80, 81, 443, 445, 457, 1080, 1100, 1241, 1352, 1433, 1434, 1521,
 
 
 # CUSTOM FUNCTIONS #
-def placeholder1():
-    pass
-
-
-def placeholder2():
-    pass
-
 
 # Https enumeration
 def enum_https(target, timeout, headers, verbose):
@@ -31,20 +24,20 @@ def enum_https(target, timeout, headers, verbose):
     sesh.keep_alive = False
     try:
         r = sesh.get(https_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
-        if r.headers["server"]:
-            srv = r.headers["server"]
+        if "server" in r.headers:
+            srv = f"({r.headers['server']})"
         else:
             srv = "None"
         if r.status_code in range(100, 199):
-            print(f'{cli.blue}INFO{cli.endc} - {https_fqdn} [{cli.blue}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.blue}INFO{cli.endc} - {https_fqdn} [{cli.blue}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(200, 299):
-            print(f'{cli.green}SUCCESS{cli.endc} - {https_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.green}SUCCESS{cli.endc} - {https_fqdn} [{cli.green}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(300, 399):
-            print(f'{cli.yellow}REDIRECTION{cli.endc} - {https_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({srv}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
+            print(f'{cli.yellow}REDIRECTION{cli.endc} - {https_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] {srv} {cli.yellow}→{cli.endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
-            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {https_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {https_fqdn} [{cli.purple}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(500, 599):
-            print(f'{cli.red}SERVER_ERROR{cli.endc} - {https_fqdn} [{cli.red}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.red}SERVER_ERROR{cli.endc} - {https_fqdn} [{cli.red}{r.status_code}{cli.endc}] {srv}')
         else:
             pass
     except requests.exceptions.ConnectTimeout:
@@ -67,20 +60,20 @@ def enum_http(target, timeout, headers, verbose):
     sesh.keep_alive = False
     try:
         r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
-        if r.headers["server"]:
-            srv = r.headers["server"]
+        if "server" in r.headers:
+            srv = f"({r.headers['server']})"
         else:
-            srv = "None"
+            srv = ""
         if r.status_code in range(100, 199):
-            print(f'{cli.blue}INFO{cli.endc} - {http_fqdn}[{cli.blue}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.blue}INFO{cli.endc} - {http_fqdn}[{cli.blue}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(200, 299):
-            print(f'{cli.green}SUCCESS{cli.endc} - {http_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.green}SUCCESS{cli.endc} - {http_fqdn} [{cli.green}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(300, 399):
-            print(f'{cli.yellow}REDIRECTION{cli.endc} - {http_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({srv}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
+            print(f'{cli.yellow}REDIRECTION{cli.endc} - {http_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] {srv} {cli.yellow}→{cli.endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
-            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {http_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {http_fqdn} [{cli.purple}{r.status_code}{cli.endc}] {srv}')
         elif r.status_code in range(500, 599):
-            print(f'{cli.red}SERVER_ERROR{cli.endc} - {http_fqdn} [{cli.red}{r.status_code}{cli.endc}] ({srv})')
+            print(f'{cli.red}SERVER_ERROR{cli.endc} - {http_fqdn} [{cli.red}{r.status_code}{cli.endc}] {srv}')
         else:
             pass
     except requests.exceptions.ConnectTimeout:
@@ -160,8 +153,6 @@ def init():
 
 # MAIN
 def main(args, target):
-    print(args)
-    print(target)
     # Var
     if args.user_agent:
         agent = {'User-Agent': args.user_agent}
@@ -194,4 +185,3 @@ def main(args, target):
     except KeyboardInterrupt:
         print(f'{cli.red} leaving..{cli.endc}')
         exit()
-
