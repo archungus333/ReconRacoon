@@ -4,6 +4,9 @@ import os
 from ..framework import cli
 # IMPORT MODULE
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+requests.adapters.DEFAULT_RETRIES = 100
 
 # Common http ports
 ports = [66, 80, 81, 443, 445, 457, 1080, 1100, 1241, 1352, 1433, 1434, 1521,
