@@ -28,16 +28,20 @@ def enum_https(target, timeout, headers, verbose):
     sesh.keep_alive = False
     try:
         r = sesh.get(https_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
+        if r.headers["server"]:
+            srv = r.headers["server"]
+        else:
+            srv = "None"
         if r.status_code in range(100, 199):
-            print(f'{cli.blue}INFO{cli.endc} - {https_fqdn} [{cli.blue}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.blue}INFO{cli.endc} - {https_fqdn} [{cli.blue}{r.status_code}{cli.endc}] ({srv})')
         elif r.status_code in range(200, 299):
-            print(f'{cli.green}SUCCESS{cli.endc} - {https_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.green}SUCCESS{cli.endc} - {https_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({srv})')
         elif r.status_code in range(300, 399):
-            print(f'{cli.yellow}REDIRECTION{cli.endc} - {https_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({r.headers["server"]}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
+            print(f'{cli.yellow}REDIRECTION{cli.endc} - {https_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({srv}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
-            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {https_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {https_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({srv})')
         elif r.status_code in range(500, 599):
-            print(f'{cli.red}SERVER_ERROR{cli.endc} - {https_fqdn} [{cli.red}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.red}SERVER_ERROR{cli.endc} - {https_fqdn} [{cli.red}{r.status_code}{cli.endc}] ({srv})')
         else:
             pass
     except requests.exceptions.ConnectTimeout:
@@ -60,16 +64,20 @@ def enum_http(target, timeout, headers, verbose):
     sesh.keep_alive = False
     try:
         r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
+        if r.headers["server"]:
+            srv = r.headers["server"]
+        else:
+            srv = "None"
         if r.status_code in range(100, 199):
-            print(f'{cli.blue}INFO{cli.endc} - {http_fqdn}[{cli.blue}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.blue}INFO{cli.endc} - {http_fqdn}[{cli.blue}{r.status_code}{cli.endc}] ({srv})')
         elif r.status_code in range(200, 299):
-            print(f'{cli.green}SUCCESS{cli.endc} - {http_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.green}SUCCESS{cli.endc} - {http_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({srv})')
         elif r.status_code in range(300, 399):
-            print(f'{cli.yellow}REDIRECTION{cli.endc} - {http_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({r.headers["server"]}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
+            print(f'{cli.yellow}REDIRECTION{cli.endc} - {http_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({srv}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
-            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {http_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {http_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({srv})')
         elif r.status_code in range(500, 599):
-            print(f'{cli.red}SERVER_ERROR{cli.endc} - {http_fqdn} [{cli.red}{r.status_code}{cli.endc}] ({r.headers["server"]})')
+            print(f'{cli.red}SERVER_ERROR{cli.endc} - {http_fqdn} [{cli.red}{r.status_code}{cli.endc}] ({srv})')
         else:
             pass
     except requests.exceptions.ConnectTimeout:
