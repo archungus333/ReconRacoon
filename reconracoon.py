@@ -4,7 +4,6 @@ from os import listdir
 from os.path import isfile, join
 # IMPORT SRC
 from src.framework import cli
-from src.modules import fuzz
 from src.modules import enum
 from src.modules import resolve
 
