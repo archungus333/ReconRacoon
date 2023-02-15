@@ -1,10 +1,11 @@
 # IMPORT
 import argparse
+import os
+import sys
 from ..framework import cli
 # IMPORT MODULE
 import socket
 from rich.progress import track
-from rich import print as rprint
 
 
 # CUSTOM FUNCTIONS #
@@ -14,15 +15,14 @@ def enum(new, domain, subs, ips, verbose, wildcard):
             dns = f'{subdom}.{domain}'
             ip = socket.gethostbyname(dns)
             if ip != wildcard:
-                rprint(
-                    f'\r[green][+][/green] Hostname: [green]{subdom}[/green].[blue]{domain}[/blue]\t IP: [white]{ip}[/white]')
+                print(f'\r{cli.green}[+]{cli.endc} Hostname: {cli.green}{subdom}{cli.endc}.{cli.blue}{domain}{cli.endc}\t IP: {ip}')
                 ips.append(ip)
                 subs.append(f'{subdom}.{domain}')
             else:
                 pass
         except Exception as E:
             if verbose is True:
-                rprint(f'\r[red][-][/red] Hostname: {dns}\t Response: [red]{E}[/red]')
+                print(f'\r{cli.red}[-]{cli.endc} Hostname: {dns}\t Response: {cli.red}{E}{cli.endc} ')
             else:
                 pass
 
@@ -41,22 +41,30 @@ def gen_output(outfile, subs, ips):
 def init():
     # Argparse
     parser = argparse.ArgumentParser(prog='reconracoon.py enum', description='Module for Subdomain Enumeration')
-    parser.add_argument('-d', '--domain', required=True)
+    parser.add_argument('-t', '--target', required=True)
     parser.add_argument('-w', '--wordlist', required=True)
     parser.add_argument('-o', '--output')
     # parser.add_argument('-t', '--threads', nargs='?', const=2, type=int)
     parser.add_argument('-v', '--verbose', action='store_true')
     args, sysargs = parser.parse_known_args()
+    # Validate Target
+    try:
+        if os.path.isfile(args.target) is False:
+            transfer = str(args.target)
+        if os.path.isfile(args.target) is True:
+            print(f'{cli.red}[x]{cli.endc} Error: Files not Supported')
+            sys.exit()
+    except Exception as E:
+        print(f'{cli.red}[x]{cli.endc} Error: {E}')
     # Call main function
-    main(args)
+    main(args, target=transfer)
 
 
 # MAIN
-def main(args):
+def main(args, target):
     # Var
     outfile = args.output
     wordlist = args.wordlist
-    domain = args.domain
     verbose = args.verbose
     # Parse Wordlist
     f = open(wordlist)
@@ -65,12 +73,12 @@ def main(args):
     new = list(map(str.strip, lst))
     new = list(dict.fromkeys(new))
     new = [x.lower() for x in new]
-    wildcard = socket.gethostbyname(domain)
-    rprint(f'\r[blue][$][/blue] Wildcard: [green]*[/green].[blue]{domain}[/blue]\t IP: [white]{wildcard}[/white]')
+    wildcard = socket.gethostbyname(target)
+    print(f'\r{cli.blue}[$]{cli.endc} Wildcard: {cli.green}*{cli.endc}.{cli.blue}{target}{cli.endc}\t IP: {wildcard}')
     # Lists
     ips = []
     subs = []
     # Main Loop
-    enum(new, domain, subs, ips, verbose, wildcard)
+    enum(new, target, subs, ips, verbose, wildcard)
     # Generate Out Files
     gen_output(outfile, subs, ips)
