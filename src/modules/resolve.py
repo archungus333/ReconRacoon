@@ -33,7 +33,7 @@ def enum_https(target, timeout, headers, verbose):
         elif r.status_code in range(200, 299):
             print(f'{cli.green}SUCCESS{cli.endc} - {https_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({r.headers["server"]})')
         elif r.status_code in range(300, 399):
-            print(f'{cli.yellow}REDIRECTION{cli.endc} - {https_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({r.headers["server"]}) {redirection}→{cli.endc} {r.headers["location"]}')
+            print(f'{cli.yellow}REDIRECTION{cli.endc} - {https_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({r.headers["server"]}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
             print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {https_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({r.headers["server"]})')
         elif r.status_code in range(500, 599):
@@ -41,12 +41,12 @@ def enum_https(target, timeout, headers, verbose):
         else:
             pass
     except requests.exceptions.ConnectTimeout:
-        if args.verbose is True:
+        if verbose is True:
             print(f'{cli.red}TIMEOUT{cli.endc} - {https_fqdn} [{cli.red}after {timeout}/s {cli.endc}]')
         else:
             pass
     except Exception as E:
-        if args.verbose is True:
+        if verbose is True:
             print(f'{cli.red}ERROR{cli.endc} - {https_fqdn} [{cli.red}{E}{cli.endc}]')
         else:
             pass
@@ -65,7 +65,7 @@ def enum_http(target, timeout, headers, verbose):
         elif r.status_code in range(200, 299):
             print(f'{cli.green}SUCCESS{cli.endc} - {http_fqdn} [{cli.green}{r.status_code}{cli.endc}] ({r.headers["server"]})')
         elif r.status_code in range(300, 399):
-            print(f'{cli.yellow}REDIRECTION{cli.endc} - {http_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({r.headers["server"]}) {redirection}→{cli.endc} {r.headers["location"]}')
+            print(f'{cli.yellow}REDIRECTION{cli.endc} - {http_fqdn} [{cli.yellow}{r.status_code}{cli.endc}] ({r.headers["server"]}) {cli.yellow}→{cli.endc} {r.headers["location"]}')
         elif r.status_code in range(400, 499):
             print(f'{cli.purple}CLIENT_ERROR{cli.endc} - {http_fqdn} [{cli.purple}{r.status_code}{cli.endc}] ({r.headers["server"]})')
         elif r.status_code in range(500, 599):
@@ -73,12 +73,12 @@ def enum_http(target, timeout, headers, verbose):
         else:
             pass
     except requests.exceptions.ConnectTimeout:
-        if args.verbose is True:
+        if verbose is True:
             print(f'{cli.red}TIMEOUT{cli.endc} - {http_fqdn} [{cli.red}after {timeout}/s {cli.endc}]')
         else:
             pass
     except Exception as E:
-        if args.verbose is True:
+        if verbose is True:
             print(f'{cli.red}ERROR{cli.endc} - {http_fqdn} [{cli.red}{E}{cli.endc}]')
         else:
             pass
@@ -90,7 +90,7 @@ def enum_robots(target, timeout, headers, verbose, robots):
     https_fqdn = f'https://{target}'
     sesh = requests.session()
     sesh.keep_alive = False
-    if args.robots:
+    if robots:
         try:
             r = sesh.get(http_fqdn, allow_redirects=False, verify=False, timeout=timeout, headers=headers)
             if r.status_code in range(200, 299):
@@ -106,12 +106,12 @@ def enum_robots(target, timeout, headers, verbose, robots):
                     os.makedirs('robots')
                 open(f'robots/HTTPS_{target}.txt', 'wb').write(robo.content)
         except requests.exceptions.ConnectTimeout:
-            if args.verbose is True:
+            if verbose is True:
                 print(f'{cli.red}TIMEOUT{cli.endc} - {http_fqdn} [{cli.red}after {timeout}/s {cli.endc}]')
             else:
                 pass
         except Exception as E:
-            if args.verbose is True:
+            if verbose is True:
                 print(f'{cli.red}ERROR{cli.endc} - {http_fqdn} [{cli.red}{E}{cli.endc}]')
             else:
                 pass
@@ -123,7 +123,6 @@ def enum_robots(target, timeout, headers, verbose, robots):
 def init():
     # Args
     parser = argparse.ArgumentParser(prog='reconracoon.py resolve', description='Module for TEMPLATE')
-    parser.add_argument('-t', '--target', dest='target', help='ARGS go HERE')
     parser.add_argument('-t', '--target', dest='target', type=str, required=True,
                         help='Target subdomains or IPs (str/file)')
     parser.add_argument('-d', '--delay', dest='timeout', type=float, default=1.0, help='Timeout for all web requests')
