@@ -14,14 +14,14 @@ white = '\033[37m'
 
 # TS
 now = datetime.datetime.now()
-cd = now.strftime("%D")
-ct = now.strftime("%H:%M:%S")
+current_time = now.strftime("%H:%M:%S")
+current_date = now.strftime("%D")
 
 # ASCII
 racoon = rf'''┌───────────────────────────────────────────┐
-│ DT: {cd}           ,,,                │
-│ TS: {ct}        .'    `/\_/\          │
-│                   .'       <@I@>          │
+│ DT: {current_date}           ,,,                │
+│ TS: {current_time}        .'    `/\_/\          │
+│                   .'       <{yellow}─{endc}I{purple}─{endc}>          │
 │        <((((((((((  )____(  \./           │
 │                   \( \(   \(\(            │
 │ {yellow}Recon{purple}Racoon{endc}        `-"`-"  " "            │
