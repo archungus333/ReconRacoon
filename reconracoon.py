@@ -12,7 +12,7 @@ print(cli.racoon)
 # ARGS
 args = sys.argv
 # MODULES
-modules = [f.strip(".py") for f in listdir('src/modules') if isfile(join('src/modules', f))]
+modules = [f.strip(".py") for f in listdir('bin/modules') if isfile(join('bin/modules', f))]
 
 # MAIN
 try:
