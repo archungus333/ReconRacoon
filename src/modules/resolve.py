@@ -110,7 +110,7 @@ def enum_robots(target, timeout, headers, verbose, robots):
                 if not os.path.exists('robots'):
                     os.makedirs('robots')
                 open(f'robots/HTTP_{target}.txt', 'wb').write(robo.content)
-            elif r.status_code in range(300, 399):
+            else:
                 robo = f'{https_fqdn}/robots.txt'
                 robo = requests.get(robo, allow_redirects=False)
                 if not os.path.exists('robots'):
