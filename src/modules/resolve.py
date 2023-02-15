@@ -175,19 +175,17 @@ def main(args, target):
                 enum_http(target, args.timeout, {'User-Agent': args.user_agent}, args.verbose)
                 enum_robots(target, args.timeout, {'User-Agent': args.user_agent}, args.verbose, args.robots)
         if type(target) is list:
-            with open(target) as file:
-                targets = [x.strip() for x in file.readlines()]
-                if args.common_ports:
-                    for url in targets:
-                        for port in ports:
-                            enum_https(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent}, args.verbose)
-                            enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent}, args.verbose)
-                            enum_robots(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose, args.robots)
-                else:
-                    for url in targets:
-                        enum_https(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose)
-                        enum_http(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose)
+            if args.common_ports:
+                for url in target:
+                    for port in ports:
+                        enum_https(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent}, args.verbose)
+                        enum_http(f'{url}:{port}', args.timeout, {'User-Agent': args.user_agent}, args.verbose)
                         enum_robots(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose, args.robots)
+            else:
+                for url in target:
+                    enum_https(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose)
+                    enum_http(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose)
+                    enum_robots(url, args.timeout, {'User-Agent': args.user_agent}, args.verbose, args.robots)
         else:
             pass
     except KeyboardInterrupt:
