@@ -5,26 +5,46 @@ import sys
 from ..framework import cli
 # IMPORT MODULE
 import socket
-from rich.progress import track
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    TextColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+    track,
+)
+
+# PROGRESS BAR #
+progress_bar = Progress(
+    TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+    BarColumn(),
+    MofNCompleteColumn(),
+    TextColumn("•"),
+    TimeElapsedColumn(),
+    TextColumn("•"),
+    TimeRemainingColumn(),
+)
 
 
 # CUSTOM FUNCTIONS #
 def enum(new, domain, subs, ips, verbose, wildcard):
-    for subdom in track(new):
-        try:
-            dns = f'{subdom}.{domain}'
-            ip = socket.gethostbyname(dns)
-            if ip != wildcard:
-                print(f'\r{cli.green}[+]{cli.endc} Hostname: {cli.green}{subdom}{cli.endc}.{cli.blue}{domain}{cli.endc}\t IP: {ip}')
-                ips.append(ip)
-                subs.append(f'{subdom}.{domain}')
-            else:
-                pass
-        except Exception as E:
-            if verbose is True:
-                print(f'\r{cli.red}[-]{cli.endc} Hostname: {dns}\t Response: {cli.red}{E}{cli.endc} ')
-            else:
-                pass
+    with progress_bar as p:
+        for subdom in p.track(new):
+            try:
+                dns = f'{subdom}.{domain}'
+                ip = socket.gethostbyname(dns)
+                if ip != wildcard:
+                    print(f'\r{cli.green}[+]{cli.endc} Hostname: {cli.green}{subdom}{cli.endc}.{cli.blue}{domain}{cli.endc}\t IP: {ip}')
+                    ips.append(ip)
+                    subs.append(f'{subdom}.{domain}')
+                else:
+                    pass
+            except Exception as E:
+                if verbose is True:
+                    print(f'\r{cli.red}[-]{cli.endc} Hostname: {dns}\t Response: {cli.red}{E}{cli.endc} ')
+                else:
+                    pass
 
 
 def gen_output(outfile, subs, ips):
